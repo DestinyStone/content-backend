@@ -1,59 +1,57 @@
-# Backend Code Style Guide
-This document outlines coding standards derived from established Python conventions and practices observed within the existing Flask/Database application.
+# 后端代码风格指南
+本文档概述了Flask和数据库应用程序中的编码标准。
 
-# General Guidelines
-## 1.1. Scope
-+ Applies to all backend components, including Python, Flask, and database-related code.
+# 通用准则
+## 1.1. 范围
++ 适用于所有后端组件，包括 Python、Flask 和数据库相关代码。
+## 1.2. 命名约定
++ 避免使用歧义或不清晰的名称。
++ 选择有意义且描述性的标识符。
+## 1.3 命名标准
++ 模块/文件：蛇形命名法 (snake_case)
++ 函数/方法（不包括 FastAPI 封装器）：驼峰命名法 (camelCase)
++ 函数/方法（在 FastAPI 封装器内）：蛇形命名法 (snake_case)
++ 变量：蛇形命名法 (snake_case)
++ 类（Pydantic 模型）：帕斯卡命名法 (PascalCase)
++ 常量：大写字母加下划线 (UPPER_CASE_WITH_UNDERSCORES)
++ 数据库集合：蛇形命名法 (snake_case)（最好使用复数形式）
 
-## 1.2. Naming Conventions
-+ Avoid ambiguous or unclear names.
-+ Choose meaningful and descriptive identifiers.
-+ Naming Standards
-+ Modules/Files: snake_case
-+ Functions/Methods (excluding FastAPI wrapper): camelCase
-+ Functions/Methods (within FastAPI wrapper): snake_case
-+ Variables: snake_case
-+ Classes (Pydantic Models): PascalCase
-+ Constants: UPPER_CASE_WITH_UNDERSCORES
-+ Database Collections: snake_case (preferably plural form)
+## 3.1.通用规则
++ 缩进：每级缩进 4 个空格
++ 行长度：尽可能限制在 79 个字符以内
++ 引号：字符串定义最好使用双引号 (")
 
-## 3.1. General Rules
-+ Indentation: 4 spaces per level
-+ Line Length: Limit to 79 characters where possible
-+ Quotes: Prefer double quotes (") for string definitions
+## 3.2. 导入组织
++ 将导入语句分行排列，并按以下方式分组：
++ 标准库模块
++ 第三方包
++ 本地应用程序特定导入
++ 函数和端点设计
++ 装饰器：将 FastAPI 装饰器直接放在 async def 或 def 语句上方
++ 类型注解：为所有参数和返回值添加类型提示
++ 输入处理：使用 FastAPI/Pydantic 结构（例如 Header(None)）和结构化模型来处理输入
 
-## 3.2. Import Organization
-+ Arrange imports in separate lines, grouped as follows:
-+ Standard library modules
-+ Third-party packages
-+ Local application-specific imports
-+ Function and Endpoint Design
-+ Decorators: Place FastAPI decorators directly above async def or def statements
-+ Type Annotations: Include type hints for all parameters and return values
-+ Input Handling: Utilize FastAPI/Pydantic constructs such as Header(None) and structured models for processing inputs
+## 4.1. RESTful API 原则
++ 遵循 RESTful 设计模式：
++ GET：检索数据
++ POST：创建新记录
++ PUT：更新现有记录
++ DELETE：删除记录
 
-## 4.1. RESTful API Principles
-+ Adhere to RESTful design patterns:
-+ GET: Retrieve data
-+ POST: Create new records
-+ PUT: Update existing records
-+ DELETE: Remove records
+## 4.2. 核心实现
++ 数据库连接：在关键操作开始时验证数据库连接是否处于活动状态功能
++ 数据验证：在数据库操作之前，对唯一性约束和业务规则进行显式检查
++ 访问控制：集中管理身份验证检查（例如，令牌验证逻辑）
 
-## 4.2. Core Implementation
-+ Database Connectivity: Verify active database connections at the start of critical functions
-+ Data Validation: Perform explicit checks for unique constraints and business rules prior to database operations
-+ Access Control: Centralize authentication checks (e.g., token validation logic)
+## 4.3. 异常管理
++ 标准错误：使用 HTTPException 返回相应的 HTTP 状态码（例如，400、401、404、500）
++ 错误隔离：将复杂或容易出错的操作放在 try-except 块中，对于未处理的异常返回 HTTP 500 响应
++ 数据库操作
 
-## 4.3. Exception Management
+## 5.1. 通用实践
++ 对象标识：使用 ObjectId() 将 URL 中的字符串 ID 转换为文档查询所需的 ID
++ 唯一标识符：集中管理 UID 生成机制（例如，通过专用实用函数）
 
-+ Standard Errors: Employ HTTPException to return appropriate HTTP status codes (e.g., 400, 401, 404, 500)
-+ Error Containment: Enclose complex or failure-prone operations in try-except blocks, returning HTTP 500 responses for unhandled exceptions
-+ Database Operations
-
-## 5.1. General Practices
-+ Object Identification: Convert string IDs from URLs using ObjectId() for document queries
-+ Unique Identifiers: Centralize UID generation mechanisms (e.g., through dedicated utility functions)
-
-## 5.2. Query Methods
-+ Single Results: Apply find_one for individual document retrieval
-+ Multiple Results: Use list(collection.find(...)) for querying multiple documents
+## 5.2. 查询方法
++ 单个结果：使用 find_one 检索单个文档
++ 多个结果：使用 list(collection.find(...)) 查询多个文档
