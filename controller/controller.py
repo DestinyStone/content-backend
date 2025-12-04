@@ -37,7 +37,6 @@ def login():
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
 
-
     if user and user.password == data['password']:
         return jsonify({
             'message': '登录成功',
@@ -109,6 +108,7 @@ def add_contact():
     data = request.get_json()
     new_contact = Contact(
         name=data['name'],
+
         phone=data['phone'],
         email=data['email'],
         gender=data['gender'],
