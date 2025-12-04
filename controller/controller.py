@@ -12,6 +12,7 @@ from models.model import Contact, db, User
 controller = Blueprint('controller', __name__)
 app = controller
 
+
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
