@@ -16,7 +16,6 @@ app = controller
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
-
     if User.query.filter_by(username=data['username']).first():
         return jsonify({'message': '用户名已存在'}), 400
 
@@ -37,6 +36,7 @@ def register():
 def login():
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
+
 
     if user and user.password == data['password']:
         return jsonify({
